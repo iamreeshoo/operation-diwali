@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operation Diwali | Rishu x Princy</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Poppins:wght@300;400;600;700;800&display=swap');
+
+:root {
+ --gold:#ffcc66;
+ --cyan:#50dfff;
+ --red:#ff4b55;
+ --purple:#a36cff;
+}
+
+* {box-sizing:border-box}
+
+body {
+ margin:0;
+ background:#03040d;
+ color:#fff;
+ font-family:Poppins,sans-serif;
+ min-height:100vh;
+ overflow-x:hidden;
+}
+
+#stars,#fx {
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ pointer-events:none;
+}
+
+#stars {z-index:0}
+#fx {z-index:8}
+
+.app {
+ position:relative;
+ z-index:2;
+ max-width:850px;
+ margin:auto;
+ min-height:100vh;
+ padding:20px;
+ display:flex;
+ flex-direction:column;
+}
+
+.top {
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #ffffff22;
+ padding:12px 0;
+ gap:10px;
+}
+
+.brand {
+ font-family:Orbitron;
+ color:var(--gold);
+ font-size:12px;
+ letter-spacing:2px;
+}
+
+.status {
+ font-size:10px;
+ color:var(--cyan);
+ letter-spacing:2px;
+}
+
+.progress {
+ width:100%;
+ height:5px;
+ background:#1b2035;
+ margin:22px 0;
+ border-radius:20px;
+ overflow:hidden;
+}
+
+#bar {
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,#8b4cff,#50dfff,#ffcc66);
+ transition:width .6s;
+}
+
+.screen {
+ display:none;
+ flex:1;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ padding:30px 5px;
+ animation:enter .7s ease;
+}
+
+.screen.active {display:flex}
+
+@keyframes enter {
+ from {opacity:0;transform:translateY(20px)}
+ to {opacity:1;transform:translateY(0)}
+}
+
+.tag {
+ color:var(--cyan);
+ font-family:Orbitron;
+ font-size:11px;
+ letter-spacing:4px;
+ margin-bottom:15px;
+}
+
+h1 {
+ font-family:Orbitron;
+ color:var(--gold);
+ font-size:clamp(32px,7vw,58px);
+ line-height:1.3;
+ text-shadow:0 0 20px #ff8c3a88;
+ margin:15px 0;
+}
+
+h2 {
+ font-family:Orbitron;
+ color:var(--cyan);
+ font-size:clamp(20px,4vw,29px);
+}
+
+p {
+ max-width:650px;
+ line-height:1.9;
+ color:#cbd1e8;
+ font-size:15px;
+}
+
+.hero {
+ font-size:65px;
+ margin:15px;
+ filter:drop-shadow(0 0 20px #ffae44);
+ animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+ 50% {transform:translateY(-12px)}
+}
+
+.quote {
+ margin:22px 0;
+ border-left:3px solid var(--gold);
+ padding:12px 18px;
+ background:#ffffff09;
+ color:var(--gold);
+ font-style:italic;
+ max-width:550px;
+}
+
+.quote small {
+ display:block;
+ margin-top:8px;
+ color:#8893b5;
+ font-style:normal;
+ font-size:10px;
+ letter-spacing:2px;
+}
+
+.panel {
+ width:100%;
+ max-width:650px;
+ padding:24px;
+ border:1px solid #ffffff25;
+ background:linear-gradient(145deg,#171a30dd,#090d20ee);
+ border-radius:20px;
+ box-shadow:0 0 40px #7651ff15;
+ margin:15px 0;
+}
+
+.options {
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ width:100%;
+ max-width:650px;
+ margin-top:15px;
+}
+
+.option {
+ min-height:95px;
+ padding:15px 10px;
+ background:#151a31;
+ color:white;
+ border:1px solid #ffffff30;
+ border-radius:13px;
+ font-family:Poppins;
+ cursor:pointer;
+ transition:.3s;
+}
+
+.option:hover {
+ transform:translateY(-4px);
+ border-color:var(--gold);
+ box-shadow:0 0 20px #ffcb6640;
+}
+
+.option b {
+ display:block;
+ color:var(--gold);
+ margin-bottom:6px;
+ font-size:14px;
+}
+
+.option span {
+ font-size:11px;
+ color:#abb4d1;
+}
+
+button {
+ padding:14px 25px;
+ border:1px solid var(--gold);
+ background:linear-gradient(110deg,#ff862e,#ffd16d);
+ color:#17101a;
+ font-weight:800;
+ border-radius:30px;
+ cursor:pointer;
+ margin:12px 5px;
+ font-family:Poppins;
+ letter-spacing:1px;
+ transition:.3s;
+}
+
+button:hover {
+ transform:scale(1.05);
+ box-shadow:0 0 25px #ffbd5b88;
+}
+
+.secondary {
+ background:#141a30;
+ color:white;
+ border-color:var(--cyan);
+}
+
+.choice-result {
+ color:#6dffc2;
+ font-size:13px;
+ min-height:25px;
+ margin:10px;
+}
+
+.stone {
+ font-size:48px;
+ filter:drop-shadow(0 0 15px var(--c));
+}
+
+.hud {
+ display:flex;
+ gap:12px;
+ justify-content:center;
+ flex-wrap:wrap;
+ margin:12px;
+}
+
+.hud span {
+ border:1px solid #ffffff30;
+ border-radius:9px;
+ padding:10px 14px;
+ font-size:11px;
+ color:var(--cyan);
+}
+
+.big {
+ font-family:Orbitron;
+ color:var(--gold);
+ font-size:clamp(55px,12vw,100px);
+ text-shadow:0 0 35px #ff9c30;
+}
+
+.hidden {display:none!important}
+
+input {
+ background:#0b1022;
+ border:1px solid var(--cyan);
+ border-radius:10px;
+ padding:14px;
+ color:white;
+ text-align:center;
+ width:85%;
+ max-width:320px;
+ font-size:16px;
+}
+
+.final-card {
+ border:1px solid var(--gold);
+ background:linear-gradient(140deg,#24142b,#11182c);
+ padding:28px 20px;
+ border-radius:22px;
+ box-shadow:0 0 50px #ffb32f35;
+ max-width:650px;
+ width:100%;
+}
+
+footer {
+ padding:18px 0;
+ text-align:center;
+ color:#626b8c;
+ font-size:10px;
+ letter-spacing:2px;
+}
+
+@media(max-width:500px) {
+ .options {grid-template-columns:1fr 1fr}
+ .app {padding:13px}
+ .panel {padding:17px}
+ .option {min-height:105px}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="fx"></canvas>
+
+<div class="app">
+
+ <div class="top">
+  <div class="brand">RISHU × PRINCY</div>
+  <div class="status" id="status">SYSTEM ONLINE</div>
+ </div>
+
+ <div class="progress"><div id="bar"></div></div>
+
+ <!-- INTRO -->
+ <section class="screen active" id="s0">
+  <div class="tag">MARVEL-INSPIRED CINEMATIC EXPERIENCE</div>
+  <div class="hero">🌌</div>
+  <h1>OPERATION<br>DIWALI</h1>
+  <h2>THE MULTIVERSE INCIDENT</h2>
+  <p>
+   Year 2026. An unknown cosmic signal has been detected.
+   Six Infinity Stones have disappeared.
+   One agent has been selected to save the celebration.
+  </p>
+  <div class="quote">
+   "I am Iron Man."
+   <small>THE LEGENDARY SIGNAL</small>
+  </div>
+  <button onclick="start()">START YOUR MISSION ⚡</button>
+  <p class="status">CONFIDENTIAL TRANSMISSION • AUTHORIZED AGENT ONLY</p>
+ </section>
+
+
+ <!-- STAGE 1 -->
+ <section class="screen" id="s1">
+  <div class="tag">STAGE 01 • THE AWAKENING</div>
+  <div class="hero">🌀</div>
+  <h1>THE PORTAL IS OPEN</h1>
+  <div class="panel">
+   <h2>WELCOME, AGENT PRINCY</h2>
+   <p>
+    Doctor Strange has detected a disturbance in the
+    multiverse. A mysterious force is stealing the light
+    from every universe.
+   </p>
+   <p>
+    Your mission: recover the six Infinity Stones before
+    the Diwali lights disappear forever.
+   </p>
+  </div>
+  <div class="quote">
+   "We're in the endgame now."
+   <small>DOCTOR STRANGE TRANSMISSION</small>
+  </div>
+  <button onclick="go(2)">ENTER THE PORTAL →</button>
+ </section>
+
+
+ <!-- STAGE 2 -->
+ <section class="screen" id="s2">
+  <div class="tag">STAGE 02 • POWER SELECTION</div>
+  <h1>CHOOSE YOUR<br>INFINITY STONE</h1>
+  <p>Every hero needs a special power. Which one represents you?</p>
+
+  <div class="options">
+   <button class="option" onclick="choose('Mind','🟡')">
+    <div class="stone" style="--c:#ffdd44">🟡</div>
+    <b>MIND STONE</b><span>Intelligence & wisdom</span>
+   </button>
+   <button class="option" onclick="choose('Time','🟢')">
+    <div class="stone" style="--c:#55ff99">🟢</div>
+    <b>TIME STONE</b><span>Control your destiny</span>
+   </button>
+   <button class="option" onclick="choose('Space','🔵')">
+    <div class="stone" style="--c:#55baff">🔵</div>
+    <b>SPACE STONE</b><span>Infinite possibilities</span>
+   </button>
+   <button class="option" onclick="choose('Reality','🔴')">
+    <div class="stone" style="--c:#ff5555">🔴</div>
+    <b>REALITY STONE</b><span>Make dreams real</span>
+   </button>
+   <button class="option" onclick="choose('Power','🟣')">
+    <div class="stone" style="--c:#b57aff">🟣</div>
+    <b>POWER STONE</b><span>Unstoppable strength</span>
+   </button>
+   <button class="option" onclick="choose('Soul','🟠')">
+    <div class="stone" style="--c:#ff9b43">🟠</div>
+    <b>SOUL STONE</b><span>Kindness & compassion</span>
+   </button>
+  </div>
+  <div class="choice-result" id="stoneResult">Waiting for your choice...</div>
+ </section>
+
+
+ <!-- STAGE 3 -->
+ <section class="screen" id="s3">
+  <div class="tag">STAGE 03 • THE THANOS PROTOCOL</div>
+  <div class="hero">👾</div>
+  <h1>THE FINAL VILLAIN</h1>
+  <div class="panel">
+   <h2>THANOS HAS ARRIVED!</h2>
+   <p>
+    Thanos has stolen the light of Diwali.
+    He offers you a deal: surrender your Infinity Stone
+    and he will spare one universe.
+   </p>
+   <p>What will you do, Agent Princy?</p>
+  </div>
+  <div class="options">
+   <button class="option" onclick="villain('Fight')">
+    <b>⚔️ FIGHT BACK</b>
+    <span>Never surrender!</span>
+   </button>
+   <button class="option" onclick="villain('Trick')">
+    <b>🧠 OUTSMART HIM</b>
+    <span>Brains over power.</span>
+   </button>
+   <button class="option" onclick="villain('Negotiate')">
+    <b>🤝 NEGOTIATE</b>
+    <span>Try a clever deal.</span>
+   </button>
+   <button class="option" onclick="villain('Snap')">
+    <b>💥 SNAP FIRST</b>
+    <span>Go all in!</span>
+   </button>
+  </div>
+  <div class="choice-result" id="villainResult"></div>
+ </section>
+
+
+ <!-- STAGE 4 -->
+ <section class="screen" id="s4">
+  <div class="tag">STAGE 04 • AVENGERS ASSEMBLE</div>
+  <h1>CHOOSE YOUR<br>ALLY</h1>
+  <p>The universe needs backup. Who is joining your team?</p>
+  <div class="options">
+   <button class="option" onclick="ally('Iron Man','🤖')">
+    <b>🤖 IRON MAN</b><span>Genius technology</span>
+   </button>
+   <button class="option" onclick="ally('Thor','⚡')">
+    <b>⚡ THOR</b><span>God of thunder</span>
+   </button>
+   <button class="option" onclick="ally('Doctor Strange','🔮')">
+    <b>🔮 DOCTOR STRANGE</b><span>Master of magic</span>
+   </button>
+   <button class="option" onclick="ally('Spider-Man','🕷️')">
+    <b>🕷️ SPIDER-MAN</b><span>Friendly neighbourhood hero</span>
+   </button>
+  </div>
+  <div class="choice-result" id="allyResult"></div>
+ </section>
+
+
+ <!-- STAGE 5 -->
+ <section class="screen" id="s5">
+  <div class="tag">STAGE 05 • FINAL BATTLE</div>
+  <div class="hero">⚡</div>
+  <h1>THE FINAL SNAP</h1>
+  <div class="panel">
+   <h2>THE LAST CHOICE</h2>
+   <p>
+    The Infinity Gauntlet is ready.
+    The multiverse is waiting.
+    One final decision will restore the lights.
+   </p>
+   <div class="quote">
+    "Avengers, assemble!"
+    <small>THE FINAL CALL</small>
+   </div>
+   <p>How will you restore the Diwali universe?</p>
+  </div>
+  <div class="options">
+   <button class="option" onclick="finalChoice('Love')">
+    <b>❤️ POWER OF LOVE</b><span>Spread kindness everywhere</span>
+   </button>
+   <button class="option" onclick="finalChoice('Light')">
+    <b>🪔 POWER OF LIGHT</b><span>Bring back every diya</span>
+   </button>
+   <button class="option" onclick="finalChoice('Friendship')">
+    <b>🤝 POWER OF FRIENDSHIP</b><span>Unite every universe</span>
+   </button>
+   <button class="option" onclick="finalChoice('Magic')">
+    <b>✨ PURE MAGIC</b><span>Make the impossible possible</span>
+   </button>
+  </div>
+  <div class="choice-result" id="finalResult"></div>
+ </section>
+
+
+ <!-- STAGE 6 -->
+ <section class="screen" id="s6">
+  <div class="tag">STAGE 06 • SECRET TRANSMISSION</div>
+  <div class="hero">📡</div>
+  <h1>MESSAGE<br>DETECTED</h1>
+  <div class="panel">
+   <h2>INCOMING TRANSMISSION</h2>
+   <p>Source: UNKNOWN</p>
+   <p>Encryption: RISHU-CLASSIFIED</p>
+   <p>Recipient: PRINCY</p>
+   <button onclick="reveal()">DECRYPT MESSAGE 🔓</button>
+   <div id="secret" class="hidden">
+    <h2 style="color:var(--gold)">HEY PRINCY! ❤️</h2>
+    <p>
+     So, you actually saved the multiverse!
+     Not bad, Agent Princy.
+    </p>
+    <p>
+     But there is something even more important than
+     all six Infinity Stones...
+    </p>
+    <h2>YOU DESERVE A LITTLE EXTRA MAGIC.</h2>
+    <p>And someone from your universe has a wish for you.</p>
+   </div>
+  </div>
+  <button id="ending" class="hidden" onclick="go(7)">
+   OPEN YOUR FINAL REWARD →
+  </button>
+ </section>
+
+
+ <!-- FINAL -->
+ <section class="screen" id="s7">
+  <div class="tag">MISSION COMPLETE • UNIVERSE RESTORED</div>
+  <div class="big">10/10</div>
+  <h1>PERFECT<br>SUPERHERO SCORE</h1>
+  <div class="final-card">
+   <div class="hero">🪔✨🎆</div>
+   <h2>HAPPY DIWALI, PRINCY!</h2>
+   <p>
+    Dear Princy,
+   </p>
+   <p>
+    Across all the galaxies, timelines and infinite
+    possibilities, there is only one thing I am certain of:
+    you deserve happiness in every universe.
+   </p>
+   <p>
+    May your days shine brighter than a thousand diyas,
+    may your dreams be bigger than the multiverse,
+    and may every new chapter bring you laughter,
+    beautiful surprises and endless reasons to smile.
+   </p>
+   <h2 style="color:#ffd16d">KEEP SHINING, SUPERSTAR! ❤️</h2>
+   <p>
+    No villain, no chaos, no bad timeline
+    deserves to steal your smile.
+   </p>
+   <p style="color:#ffca69;font-weight:bold">
+    This universe is lucky to have you in it.
+   </p>
+   <hr style="border-color:#ffffff30">
+   <p>With lots of wishes,</p>
+   <h2>RISHU ✦</h2>
+   <p style="font-size:11px">YOUR FRIEND FROM THIS UNIVERSE</p>
+  </div>
+  <button onclick="celebrate()">🎆 CELEBRATE THE VICTORY</button>
+  <button class="secondary" onclick="location.reload()">↻ REPLAY THE MISSION</button>
+ </section>
+
+ <footer>STARK INDUSTRIES × THE MULTIVERSE • 2026</footer>
+
+</div>
+
+<script>
+
+// GAME DATA
+
+let score=0;
+let selectedStone="";
+let selectedAlly="";
+let selectedVillain="";
+let selectedFinal="";
+
+function start() {
+ go(1);
+}
+
+function go(n) {
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById('s'+n).classList.add('active');
+
+ document.getElementById('bar').style.width=(n/7*100)+'%';
+ document.getElementById('status').innerText='STAGE '+String(n).padStart(2,'0')+' / 07';
+
+ window.scrollTo({top:0,behavior:'smooth'});
+ sound(500,.1);
+
+ if(n===7) celebrate();
+}
+
+
+// CHOICES
+
+function choose(stone,emoji) {
+ selectedStone=stone;
+ score+=10;
+ document.getElementById('stoneResult').innerText=
+ emoji+" "+stone+" STONE ACQUIRED! +10 POINTS";
+
+ setTimeout(()=>go(3),1100);
+}
+
+function villain(choice) {
+ selectedVillain=choice;
+ score+=10;
+ let msg={
+  Fight:"Fearless! That's the Avenger spirit!",
+  Trick:"Genius move! Even Tony Stark approves.",
+  Negotiate:"Diplomatic genius. Nick Fury would approve.",
+  Snap:"Bold move! The universe felt that one."
+ };
+
+ document.getElementById('villainResult').innerText=msg[choice]+" +10 POINTS";
+ setTimeout(()=>go(4),1300);
+}
+
+function ally(name,emoji) {
+ selectedAlly=name;
+ score+=10;
+
+ document.getElementById('allyResult').innerText=
+ emoji+" "+name+" HAS JOINED YOUR TEAM!";
+
+ setTimeout(()=>go(5),1100);
+}
+
+function finalChoice(choice) {
+ selectedFinal=choice;
+ score+=10;
+
+ let msgs={
+  Love:"The universe is restored through kindness.",
+  Light:"Every diya is shining once again.",
+  Friendship:"The entire multiverse stands together.",
+  Magic:"The impossible just became possible!"
+ };
+
+ document.getElementById('finalResult').innerText=
+ msgs[choice]+" +10 POINTS";
+
+ setTimeout(()=>go(6),1400);
+}
+
+
+// SECRET
+
+function reveal() {
+ document.getElementById('secret').classList.remove('hidden');
+ document.getElementById('ending').classList.remove('hidden');
+ sound(760,.3);
+}
+
+
+// FIREWORKS
+
+const canvas=document.getElementById('fx');
+const ctx=canvas.getContext('2d');
+
+function resize() {
+ canvas.width=window.innerWidth;
+ canvas.height=window.innerHeight;
+}
+resize();
+window.addEventListener('resize',resize);
+
+let particles=[];
+
+function burst(x,y) {
+ const colors=['#ffd166','#ff526c','#5bdcff','#b88aff','#ffffff','#65ffb5'];
+
+ for(let i=0;i<80;i++) {
+  let angle=Math.random()*Math.PI*2;
+  let speed=Math.random()*5+1;
+
+  particles.push({
+   x,y,
+   vx:Math.cos(angle)*speed,
+   vy:Math.sin(angle)*speed,
+   life:1,
+   color:colors[Math.floor(Math.random()*colors.length)]
+  });
+ }
+}
+
+function animate() {
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ for(let i=particles.length-1;i>=0;i--) {
+  let p=particles[i];
+  p.x+=p.vx;
+  p.y+=p.vy;
+  p.vy+=.04;
+  p.life-=.012;
+
+  ctx.globalAlpha=Math.max(0,p.life);
+  ctx.fillStyle=p.color;
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+  ctx.fill();
+
+  if(p.life<=0) particles.splice(i,1);
+ }
+ ctx.globalAlpha=1;
+
+ requestAnimationFrame(animate);
+}
+animate();
+
+function celebrate() {
+ for(let i=0;i<9;i++) {
+  setTimeout(()=>{
+   burst(Math.random()*canvas.width,
+   Math.random()*canvas.height*.65);
+  },i*250);
+ }
+}
+
+
+// STAR BACKGROUND
+
+const stars=document.getElementById('stars');
+const sc=stars.getContext('2d');
+let starArray=[];
+
+function starResize() {
+ stars.width=window.innerWidth;
+ stars.height=window.innerHeight;
+
+ starArray=Array.from({length:140},()=>({
+  x:Math.random()*stars.width,
+  y:Math.random()*stars.height,
+  r:Math.random()*1.5,
+  a:Math.random()*6
+ }));
+}
+
+function drawStars() {
+ sc.clearRect(0,0,stars.width,stars.height);
+
+ starArray.forEach(s=>{
+  s.a+=.02;
+  sc.fillStyle=`rgba(255,255,255,${Math.abs(Math.sin(s.a))})`;
+  sc.beginPath();
+  sc.arc(s.x,s.y,s.r,0,Math.PI*2);
+  sc.fill();
+ });
+
+ requestAnimationFrame(drawStars);
+}
+starResize();
+window.addEventListener('resize',starResize);
+drawStars();
+
+
+// SIMPLE SYNTH SOUND EFFECT
+
+let audio=null;
+
+function sound(freq,duration) {
+ try {
+  if(!audio) audio=new(window.AudioContext||window.webkitAudioContext)();
+  if(audio.state==='suspended') audio.resume();
+
+  let osc=audio.createOscillator();
+  let gain=audio.createGain();
+
+  osc.frequency.value=freq;
+  osc.type='sine';
+  gain.gain.setValueAtTime(.06,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+
+  osc.connect(gain);
+  gain.connect(audio.destination);
+  osc.start();
+  osc.stop(audio.currentTime+duration);
+ } catch(e) {}
+}
+
+</script>
+</body>
+</html>
